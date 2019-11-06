@@ -52,7 +52,7 @@ public class Proxy {
 		
 		setExistNext(existNext);
 		setExistPrev(existPrev);
-		
+		//
 	}
 	
 	public int parseInt(String param) {
