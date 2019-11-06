@@ -68,11 +68,12 @@ public class ArticleCtrl {
 		printer.accept("해당 글목록 : " + c.get());
 
 		List<String> pageNumList = new ArrayList<>();
-		for(int i = pxy.getPageNum(); i <= pxy.getPageSize(); i++)
+
+		for(int i = pxy.getStartPage(); i < pxy.getStartPage()+pxy.getPageSize(); i++)
 			pageNumList.add(String.valueOf(i));
 
-		map.accept(Arrays.asList("articles", "pages", "prev", "next"),
-					Arrays.asList(c.get(), pageNumList, Arrays.asList(pxy.getExistPrev()), Arrays.asList(pxy.getExistNext()) ));
+		map.accept(Arrays.asList("articles", "pages", "pxy"),//, "prev", "next"),
+				Arrays.asList(c.get(), pageNumList, pxy));
 		return map.get();
 	}
 

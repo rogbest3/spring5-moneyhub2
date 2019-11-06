@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Component @Data @Lazy
 public class ProxyMap {
-	HashMap<String, Object> map;
+	private HashMap<String, Object> map;
 	
 	public void accept(List<String> x, List<?> y) {
 		map = new HashMap<>();

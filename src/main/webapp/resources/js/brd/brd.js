@@ -65,7 +65,8 @@ brd =(()=>{
 		$('#recent_updates .media').remove()
 		$('#recent_updates .d-block').remove()
 		$('#suggerstions').remove()
-		alert('recent_updates 들어옴, _ : ' + _)
+		$('#recent_updates .container').remove()
+	//	alert('recent_updates 들어옴, _ : ' + _)
 		$.getJSON(_+'/articles/page/' + x.page + '/size/' + x.size, d=>{	// success이기 때문에 d를 가져올수 있음
 			//	alert('글 목록 숫자 : ' + d.count)
 			//	$('#recent_updates').html(ui)			
@@ -128,32 +129,45 @@ brd =(()=>{
 			  '</form>'+
 			  '</div').prependTo('#recent_updates div.container')
 			//$('#paging_form').css({width:'80%'})
-			
+			  
 			$.each([5, 10, 15], (i, j)=>{
 				$('<option value="'+ j +'">'+ j +'개보기</option>')
 				.appendTo('#paging_form select')
+				
 			})
+//			$('#paging_form option[value="'+ d.pxy.pageSize +'"]').attr('selected', true)	
 /*			$('#recent_updates div.container')
 			.css({ width : '30%', padding : '0 auto' })
 			*/
 			
 			$.each(d.pages, (i, j)=>{
-				$('<li class="page-item"><a class="page-link" href="#">'+(i+1)+'</a></li>')
+				$('<li class="page-item"><a class="page-link" href="#">'+j+'</a></li>')
 				.appendTo('#pagination')
+				.click(()=>{
+					recent_updates({ page : j, size : '5' })
+				})
 			})
 			$('#pagination').css({ 'justify-content' : 'center' })
 			
-			alert('d.next : ' + d.next)
-			if(d.prev === 'true'){
-				alert('prev true')
-				$('<li class="page-item"><a class="page-link" href="#">prev</a></li>')
+			if(d.pxy.existPrev){
+				$('<li class="page-item"><a class="page-link" href="#">이전</a></li>')
 				.prependTo('#pagination')
+				.click(()=>{
+					recent_updates({ page : d.pxy.startPage - 1, size : '5' })
+				})
 			}
-			if(d.next === 'true'){
-				alert('next true')
-				$('<li class="page-item"><a class="page-link" href="#">next</a></li>')
+			if(d.pxy.existNext){
+				$('<li class="page-item"><a class="page-link" href="#">다음</a></li>')
 				.appendTo('#pagination')
+				.click(()=>{
+					recent_updates({ page : d.pxy.endPage + 1, size : '5' })
+				})
 			}
+			$('#paging_form').change(()=>{
+			//	alert('선택보기 : ' + $('#paging_form option:selected').text())
+				recent_updates({ page : '1', size : $('#paging_form option:selected').val() })
+			})
+			
 		})
 	}
 	
