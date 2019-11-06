@@ -44,6 +44,7 @@ public class Crawler {
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}*/
+		//test
 		try {
 			Document rawData = Jsoup.connect("https://kr.fxexchangerate.com/currency-exchange-rates.html")
 									.timeout(10*1000)
