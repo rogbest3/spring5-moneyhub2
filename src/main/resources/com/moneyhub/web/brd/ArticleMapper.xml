@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.moneyhub.web.brd.ArticleMapper">
+
+    <insert id="insertArticle" parameterType="Article" >
+        insert into Article (cid, board_type, title, content) values (
+             #{cid}, #{boardType}, #{title}, #{content}
+        )
+    </insert>
+    <select id="countArticle" resultType="string">
+	    SELECT COUNT(ARTSEQ)
+		FROM ARTICLE
+    </select>
+   <!--  <select id="selectAll" resultType="Article">
+    	SELECT A.BOARD_TYPE AS boardType, A.* FROM ARTICLE A
+    </select> -->
+    <select id="selectAll" resultType="Article" parameterType="Proxy">
+    	select BOARD_TYPE as boardType, A.*
+		from (select *
+			from article
+			order by ARTSEQ DESC ) A
+		limit ${startRow}, ${pageSize}
+    </select>
+    <delete id="deleteArticle" parameterType="string">
+    	DELETE FROM ARTICLE 
+		WHERE ARTSEQ = #{artSeq}
+    </delete>
+    <update id="updateArticle" parameterType="Article">
+    	UPDATE ARTICLE 
+		SET TITLE = #{title}, CONTENT = #{content}
+		WHERE ARTSEQ = #{artSeq}
+    </update>
+<!--  artSeq, image, cid, comments, msg, rating, type, title, content; -->
+</mapper>

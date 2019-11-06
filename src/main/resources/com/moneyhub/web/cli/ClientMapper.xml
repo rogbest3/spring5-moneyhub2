@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.moneyhub.web.cli.ClientMapper">
+<!--     <resultMap type="com.moneyhub.web.cli.Client" id="Client"> -->
+<!--         <id column="CID" property="cid"/> -->
+<!--         <result column="CSTATE" property="cstate"/> -->
+<!--         <result column="LEVEL" property="level"/> -->
+<!--         <result column="HUB_ACCOUNT" property="hubAccount"/> -->
+<!--         <result column="PWD" property="pwd"/> -->
+<!--         <result column="REG" property="reg"/> -->
+<!--         <result column="WDD" property="wdd"/> -->
+<!--     </resultMap> -->
+
+    <select id="selectClientByIdPw" resultType="Client" >
+        SELECT * FROM CLIENT
+		WHERE CID LIKE #{cid} AND PWD LIKE #{pwd}
+    </select>
+    <insert id="insertClient" parameterType="Client" >
+        insert into client (cstate, level, hub_account, cid, pwd, reg, wdd) values (
+            #{cstate}, #{level}, #{hubAccount}, #{cid}, #{pwd}, #{reg}, #{wdd}
+        )
+    </insert>
+    <select id="existId" resultType="Integer" >
+        SELECT COUNT(*) FROM CLIENT
+		WHERE CID LIKE #{cid}
+    </select>
+  
+</mapper>
