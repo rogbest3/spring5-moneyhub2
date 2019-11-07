@@ -67,13 +67,8 @@ public class ArticleCtrl {
 		ISupplier <List<Article>> c = () -> articleMapper.selectAll(pxy);
 		printer.accept("해당 글목록 : " + c.get());
 
-		List<String> pageNumList = new ArrayList<>();
-
-		for(int i = pxy.getStartPage(); i < pxy.getStartPage()+pxy.getPageSize(); i++)
-			pageNumList.add(String.valueOf(i));
-
-		map.accept(Arrays.asList("articles", "pages", "pxy"),//, "prev", "next"),
-				Arrays.asList(c.get(), pageNumList, pxy));
+		map.accept(Arrays.asList("articles", "pxy"),//, "prev", "next"),
+				Arrays.asList(c.get(), pxy));
 		return map.get();
 	}
 

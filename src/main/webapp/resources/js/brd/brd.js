@@ -73,6 +73,7 @@ brd =(()=>{
 			//	$('#recent_updates').append('<h1>등록된 글이 없습니다.</h1>')
 			// i - key( index), j - value ( article	) json
 	//		let i = 0
+			let pxy = d.pxy
 			let res = ''
 			$.each(d.articles, (i, j)=>{
 				$('<div class="media text-muted pt-3">'+
@@ -135,33 +136,55 @@ brd =(()=>{
 				.appendTo('#paging_form select')
 				
 			})
-//			$('#paging_form option[value="'+ d.pxy.pageSize +'"]').attr('selected', true)	
+			$('#paging_form option[value="'+ pxy.pageSize +'"]').attr('selected', true)	
+			
 /*			$('#recent_updates div.container')
 			.css({ width : '30%', padding : '0 auto' })
 			*/
 			
-			$.each(d.pages, (i, j)=>{
+		/*	$.each(pxy.pages, (i, j)=>{
 				$('<li class="page-item"><a class="page-link" href="#">'+j+'</a></li>')
 				.appendTo('#pagination')
 				.click(()=>{
 					recent_updates({ page : j, size : '5' })
 				})
-			})
+			})*/
+			for(let i = pxy.startPage; i <= pxy.endPage; i++){
+				if( pxy.pageNum == i ){
+					$('<li class="page-item"><a class="page-link" href="#">'+i+'</a></li>')
+					.appendTo('#pagination')
+					.addClass('active')
+				}
+				else{
+					$('<li class="page-item"><a class="page-link" href="#">'+i+'</a></li>')
+					.appendTo('#pagination')
+					.click(function(){
+			//			recent_updates({ page : i, size : pxy.pageSize })
+						recent_updates({ page : $(this).children('.page-link').text(), size : pxy.pageSize })
+					})							// 		a link 
+				}
+			}	
+			
 			$('#pagination').css({ 'justify-content' : 'center' })
 			
-			if(d.pxy.existPrev){
+			if(pxy.existPrev){
 				$('<li class="page-item"><a class="page-link" href="#">이전</a></li>')
 				.prependTo('#pagination')
-				.click(()=>{
-					recent_updates({ page : d.pxy.startPage - 1, size : '5' })
+				.click(e=>{
+					e.preventDefault()
+				//	recent_updates({ page : pxy.startPage - 1, size : '5' })
+					recent_updates({ page : pxy.prevBlock, size : pxy.pageSize })
 				})
 			}
-			if(d.pxy.existNext){
+			if(pxy.existNext){
 				$('<li class="page-item"><a class="page-link" href="#">다음</a></li>')
 				.appendTo('#pagination')
 				.click(()=>{
-					recent_updates({ page : d.pxy.endPage + 1, size : '5' })
+					recent_updates({ page : pxy.nextBlock, size : pxy.pageSize })
+				//	recent_updates({ page : pxy.endPage + 1, size : '5' })
+	//				$('#paging_form option[value="'+ pxy.pageSize +'"]').attr('selected', true)	
 				})
+			
 			}
 			$('#paging_form').change(()=>{
 			//	alert('선택보기 : ' + $('#paging_form option:selected').text())
